@@ -10,10 +10,10 @@
                     ></wwLayout>
                     <transition name="fade" mode="out-in">
                         <wwLayout
-                            v-show="currentTabIndex === index || isEditing"
+                            v-if="currentTabIndex === index || isEditing"
                             class="sublayout -layout"
                             :class="{ isEditing: isEditing }"
-                            :path="`subTabLayouts[${index}]`"
+                            :path="`subTabLayouts[${currentTabIndex}]`"
                         >
                         </wwLayout>
                     </transition>

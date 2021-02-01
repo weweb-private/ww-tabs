@@ -1,6 +1,6 @@
-# WW-BASE
+# WW-TABS
 
-This is a section for Weweb. It's a very basic one with a background and a container
+This is a element for Weweb.
 
 ## Installation
 

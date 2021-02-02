@@ -201,6 +201,10 @@ export default {
             top: var(--tab-topBottom-position);
             left: var(--tab-leftRight-position);
             transform: translateX(-50%);
+
+            @media only screen and (max-width: 420px) {
+                left: calc(var(--tab-leftRight-position) - 11%);
+            }
         }
 
         &.left {

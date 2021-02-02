@@ -1,6 +1,12 @@
 <template>
     <div class="tabs-object" :class="content.tabsPosition" :style="cssVariables">
-        <div class="tabs-container" :class="content.tabsPosition" v-if="this.tabsNumber">
+        <div
+            class="tabs-container fixedToTop"
+            ref="fixedTabs"
+            v-show="content.fixedToTop && this.tabsNumber"
+            :class="content.tabsPosition"
+            :style="cssTabsFixedPosition"
+        >
             <div class="layout-container" v-for="index in this.tabsNumber" :key="index" @click="changeTab(index)">
                 <div class="layout-sublayout">
                     <wwLayout
@@ -20,6 +26,28 @@
                 </div>
             </div>
         </div>
+
+        <div class="tabs-container" :class="content.tabsPosition" v-if="this.tabsNumber && !content.fixedToTop">
+            <div class="layout-container" v-for="index in this.tabsNumber" :key="index" @click="changeTab(index)">
+                <div class="layout-sublayout">
+                    <wwLayout
+                        class="layout -layout"
+                        :class="{ isEditing: isEditing }"
+                        :path="`tabsList[${index}]`"
+                    ></wwLayout>
+                    <transition name="fade" mode="out-in">
+                        <wwLayout
+                            v-if="currentTabIndex === index || isEditing"
+                            class="sublayout -layout"
+                            :class="{ isEditing: isEditing }"
+                            :path="`subTabLayouts[${currentTabIndex}]`"
+                        >
+                        </wwLayout>
+                    </transition>
+                </div>
+            </div>
+        </div>
+
         <transition :name="activeTransition" mode="out-in">
             <div class="tabs-content" :key="currentTabIndex">
                 <wwLayout
@@ -34,6 +62,8 @@
 </template>
 
 <script>
+import { getSettingsConfigurations } from './configuration';
+
 export default {
     props: {
         content: Object,
@@ -51,7 +81,15 @@ export default {
         tabsContent: [],
         tabsList: [],
         subTabLayouts: [],
+        fixedToTop: false,
+        leftRightPosition: '30%',
+        topBottomPosition: '-50%',
     },
+    /* wwEditor:start */
+    wwEditorConfiguration({ content }) {
+        return getSettingsConfigurations(content);
+    },
+    /* wwEditor:end */
     data() {
         return {
             currentTabIndex: 1,
@@ -75,6 +113,12 @@ export default {
         cssVariables() {
             return {
                 '--tab-transition-duration': this.content.transitionDuration + 's',
+            };
+        },
+        cssTabsFixedPosition() {
+            return {
+                '--tab-leftRight-position': this.content.leftRightPosition,
+                '--tab-topBottom-position': this.content.topBottomPosition,
             };
         },
     },
@@ -112,6 +156,8 @@ export default {
 <style lang="scss" scoped>
 .tabs-object {
     --tab-transition-duration: 0.5s;
+    --tab-leftRight-position: 30%;
+    --tab-topBottom-position: -50%;
 
     position: relative;
     min-width: 100px;
@@ -146,6 +192,14 @@ export default {
         flex-direction: row;
         justify-content: center;
         align-items: flex-start;
+        position: relative;
+
+        &.fixedToTop {
+            position: absolute;
+            top: var(--tab-topBottom-position);
+            left: var(--tab-leftRight-position);
+            transform: translateX(-50%);
+        }
 
         &.left {
             flex-direction: column;

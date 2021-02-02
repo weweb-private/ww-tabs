@@ -165,6 +165,7 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    overflow: visible;
 
     &.bottom {
         flex-direction: column-reverse;

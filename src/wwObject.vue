@@ -195,6 +195,7 @@ export default {
         position: relative;
 
         &.fixedToTop {
+            z-index: 10;
             position: absolute;
             top: var(--tab-topBottom-position);
             left: var(--tab-leftRight-position);

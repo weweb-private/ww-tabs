@@ -40,7 +40,7 @@
                             v-if="currentTabIndex === index || isEditing"
                             class="sublayout -layout"
                             :class="{ isEditing: isEditing }"
-                            :path="`subTabLayouts[${currentTabIndex}]`"
+                            :path="`subTabLayouts[${index}]`"
                         >
                         </wwLayout>
                     </transition>

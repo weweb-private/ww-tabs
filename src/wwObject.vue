@@ -199,6 +199,7 @@ export default {
         min-width: 390px;
 
         &.fixedToTop {
+            width: 100vw;
             z-index: 9999999;
             position: absolute;
             top: var(--tab-topBottom-position);

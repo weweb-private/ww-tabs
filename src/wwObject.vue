@@ -1,6 +1,5 @@
 <template>
     <div class="tabs-object" :class="content.tabsPosition" :style="cssVariables">
-        {{ getSublayoutHeight }}
         <div
             class="tabs-container fixedToTop"
             ref="fixedTabs"

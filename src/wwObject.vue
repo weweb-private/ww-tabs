@@ -1,5 +1,6 @@
 <template>
     <div class="tabs-object" :class="content.tabsPosition" :style="cssVariables">
+        {{ getSublayoutHeight }}
         <div
             class="tabs-container fixedToTop"
             ref="fixedTabs"
@@ -22,6 +23,7 @@
                             :path="`subTabLayouts[${currentTabIndex}]`"
                         >
                         </wwLayout>
+                        <div v-else :style="{ minHeight: getSublayoutHeight }"></div>
                     </transition>
                 </div>
             </div>
@@ -38,11 +40,12 @@
                     <transition name="fade" mode="out-in">
                         <wwLayout
                             v-if="currentTabIndex === index || isEditing"
-                            class="sublayout -layout"
+                            class="sublayout -layout tabs-sublayout-container"
                             :class="{ isEditing: isEditing }"
                             :path="`subTabLayouts[${index}]`"
                         >
                         </wwLayout>
+                        <div v-else :style="{ minHeight: getSublayoutHeight }"></div>
                     </transition>
                 </div>
             </div>
@@ -120,6 +123,14 @@ export default {
                 '--tab-leftRight-position': this.content.leftRightPosition,
                 '--tab-topBottom-position': this.content.topBottomPosition,
             };
+        },
+        getSublayoutHeight() {
+            const elHeight = document.querySelectorAll('.tabs-sublayout-container');
+            if (elHeight && elHeight.length && elHeight[this.currentTabIndex]) {
+                return `${elHeight[this.currentTabIndex].offsetHeight}px`;
+            }
+
+            return '24px';
         },
     },
     methods: {

@@ -191,9 +191,12 @@ export default {
         z-index: 1;
         display: flex;
         flex-direction: row;
+        flex-wrap: wrap;
         justify-content: center;
         align-items: flex-start;
         position: relative;
+        width: 100%;
+        min-width: 390px;
 
         &.fixedToTop {
             z-index: 9999999;

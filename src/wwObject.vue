@@ -1,51 +1,20 @@
 <template>
     <div class="tabs-object" :class="content.tabsPosition" :style="cssVariables">
-        <div
-            class="tabs-container fixedToTop"
-            ref="fixedTabs"
-            v-show="content.fixedToTop && this.tabsNumber"
-            :class="content.tabsPosition"
-            :style="cssTabsFixedPosition"
-        >
+        <div class="tabs-container" :class="content.tabsPosition" :style="itemsPerLines" v-if="this.tabsNumber">
             <div class="layout-container" v-for="index in this.tabsNumber" :key="index" @click="changeTab(index)">
                 <div class="layout-sublayout">
                     <wwLayout
+                        v-if="currentTabIndex === index || editActiveTabs"
+                        class="layout -layout"
+                        :class="{ isEditing: isEditing }"
+                        :path="`tabsListActive[${index}]`"
+                    ></wwLayout>
+                    <wwLayout
+                        v-else
                         class="layout -layout"
                         :class="{ isEditing: isEditing }"
                         :path="`tabsList[${index}]`"
                     ></wwLayout>
-                    <transition name="fade" mode="out-in">
-                        <wwLayout
-                            v-if="currentTabIndex === index || isEditing"
-                            class="sublayout -layout"
-                            :class="{ isEditing: isEditing }"
-                            :path="`subTabLayouts[${currentTabIndex}]`"
-                        >
-                        </wwLayout>
-                        <div v-else :style="{ minHeight: getSublayoutHeight }"></div>
-                    </transition>
-                </div>
-            </div>
-        </div>
-
-        <div class="tabs-container" :class="content.tabsPosition" v-if="this.tabsNumber && !content.fixedToTop">
-            <div class="layout-container" v-for="index in this.tabsNumber" :key="index" @click="changeTab(index)">
-                <div class="layout-sublayout">
-                    <wwLayout
-                        class="layout -layout"
-                        :class="{ isEditing: isEditing }"
-                        :path="`tabsList[${index}]`"
-                    ></wwLayout>
-                    <transition name="fade" mode="out-in">
-                        <wwLayout
-                            v-if="currentTabIndex === index || isEditing"
-                            class="sublayout -layout tabs-sublayout-container"
-                            :class="{ isEditing: isEditing }"
-                            :path="`subTabLayouts[${index}]`"
-                        >
-                        </wwLayout>
-                        <div v-else :style="{ minHeight: getSublayoutHeight }"></div>
-                    </transition>
                 </div>
             </div>
         </div>
@@ -74,18 +43,18 @@ export default {
         /* wwEditor:end */
     },
     wwDefaultContent: {
-        numberOfTabs: '3',
-        tabsPosition: 'top',
+        numberOfTabs: '6',
+        tabsPosition: 'left',
+        maxItemsPerLine: 2,
         transition: 'fade',
         transitionDuration: 0.5,
         order: null,
+        editActiveTabs: false,
 
         tabsContent: [],
         tabsList: [],
+        tabsListActive: [],
         subTabLayouts: [],
-        fixedToTop: false,
-        leftRightPosition: '30%',
-        topBottomPosition: '-50%',
     },
     /* wwEditor:start */
     wwEditorConfiguration({ content }) {
@@ -117,10 +86,9 @@ export default {
                 '--tab-transition-duration': this.content.transitionDuration + 's',
             };
         },
-        cssTabsFixedPosition() {
+        itemsPerLines() {
             return {
-                '--tab-leftRight-position': this.content.leftRightPosition,
-                '--tab-topBottom-position': this.content.topBottomPosition,
+                '--items-per-line': 100 / this.content.maxItemsPerLine + '%',
             };
         },
         getSublayoutHeight() {
@@ -156,9 +124,21 @@ export default {
                     this.activeTransition = 'fade';
             }
         },
+        turnOnAsctiveState() {
+            this.$emit('update', { editActiveTabs: true });
+            console.log(this.content.editActiveTabs);
+        },
+        turnOffAsctiveState() {
+            this.$emit('update', { editActiveTabs: false });
+            console.log(this.content.editActiveTabs);
+        },
     },
     mounted() {
+        if (this.editActiveTabs) this.turnOffAsctiveState();
         if (this.content.numberOfTabs) this.tabsNumber = parseInt(this.content.numberOfTabs);
+    },
+    beforeDestroy() {
+        this.turnOffAsctiveState();
     },
 };
 </script>
@@ -173,6 +153,7 @@ export default {
     min-width: 100px;
     min-height: 100px;
     display: flex;
+    margin: auto;
     flex-direction: column;
     justify-content: center;
     overflow: visible;
@@ -188,6 +169,8 @@ export default {
     }
 
     .tabs-content {
+        width: 100%;
+
         .layout {
             flex-direction: column;
             min-width: 200px;
@@ -198,6 +181,10 @@ export default {
     }
 
     .tabs-container {
+        --items-per-line: 50%;
+
+        width: 100%;
+
         z-index: 1;
         display: flex;
         flex-direction: row;
@@ -205,33 +192,22 @@ export default {
         justify-content: center;
         align-items: flex-start;
         position: relative;
-        width: 100%;
         min-width: 390px;
 
-        &.fixedToTop {
-            width: 100vw;
-            z-index: 9999999;
-            position: absolute;
-            top: var(--tab-topBottom-position);
-            left: var(--tab-leftRight-position);
-            transform: translateX(-50%);
-
-            @media only screen and (max-width: 420px) {
-                left: calc(var(--tab-leftRight-position) - 11%);
-            }
-        }
-
         &.left {
-            flex-direction: column;
+            width: 50%;
+            flex-direction: row;
             align-items: flex-end;
         }
 
         &.right {
-            flex-direction: column;
+            width: 50%;
+            flex-direction: row;
             align-items: flex-start;
         }
 
         .layout-container {
+            flex: 0 var(--items-per-line);
             display: flex;
             flex-direction: row;
             justify-content: center;

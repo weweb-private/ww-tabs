@@ -4,7 +4,7 @@
             <div class="layout-container" v-for="index in this.tabsNumber" :key="index" @click="changeTab(index)">
                 <div class="layout-sublayout">
                     <wwLayout
-                        v-if="currentTabIndex === index || editActiveTabs"
+                        v-if="currentTabIndex === index || content.editActiveTabs"
                         class="layout -layout"
                         :class="{ isEditing: isEditing }"
                         :path="`tabsListActive[${index}]`"

@@ -126,11 +126,9 @@ export default {
         },
         turnOnAsctiveState() {
             this.$emit('update', { editActiveTabs: true });
-            console.log(this.content.editActiveTabs);
         },
         turnOffAsctiveState() {
             this.$emit('update', { editActiveTabs: false });
-            console.log(this.content.editActiveTabs);
         },
     },
     mounted() {

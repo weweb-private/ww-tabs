@@ -48,6 +48,7 @@ export default {
         maxItemsPerLine: 2,
         transition: 'fade',
         transitionDuration: 0.5,
+        tabsContentWidth: '50%',
         order: null,
         editActiveTabs: false,
 
@@ -84,6 +85,7 @@ export default {
         cssVariables() {
             return {
                 '--tab-transition-duration': this.content.transitionDuration + 's',
+                '--width-repartition': this.content.tabsContentWidth,
             };
         },
         itemsPerLines() {
@@ -102,6 +104,7 @@ export default {
     },
     methods: {
         changeTab(index) {
+            if (this.isEditing) return;
             this.order = index > this.currentTabIndex ? 'after' : 'before';
             this.handleTransition(this.order);
             this.currentTabIndex = index;
@@ -132,7 +135,7 @@ export default {
         },
     },
     mounted() {
-        if (this.editActiveTabs) this.turnOffAsctiveState();
+        this.turnOffAsctiveState();
         if (this.content.numberOfTabs) this.tabsNumber = parseInt(this.content.numberOfTabs);
     },
     beforeDestroy() {
@@ -146,13 +149,14 @@ export default {
     --tab-transition-duration: 0.5s;
     --tab-leftRight-position: 30%;
     --tab-topBottom-position: -50%;
+    --width-repartition: 50%;
 
     position: relative;
     min-width: 100px;
     min-height: 100px;
     display: flex;
     margin: auto;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     overflow: visible;
 
@@ -167,7 +171,7 @@ export default {
     }
 
     .tabs-content {
-        width: 100%;
+        width: calc(100% - var(--width-repartition));
 
         .layout {
             flex-direction: column;
@@ -181,7 +185,7 @@ export default {
     .tabs-container {
         --items-per-line: 50%;
 
-        width: 100%;
+        width: var(--width-repartition);
 
         z-index: 1;
         display: flex;
@@ -238,18 +242,6 @@ export default {
                         border: 1px dashed var(--ww-color-dark-500);
                     }
                 }
-            }
-        }
-
-        .tab-dropzone-container {
-            width: 100%;
-            height: 100%;
-            border: 1px solid lightgray;
-            padding: 10px 10px;
-
-            .tab_dropzone {
-                width: 100px;
-                height: 100px;
             }
         }
     }

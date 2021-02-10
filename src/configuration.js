@@ -34,6 +34,14 @@ const COMMON_TABS_OPTIONS = {
         },
         path: 'tabsPosition',
     },
+    tabsContentWidth: {
+        type: 'Length',
+        label: { en: 'Ajust width', fr: 'Ajust width' },
+        options: {
+            unitChoices: [{ value: '%', label: '%', min: 0, max: 100, step: 1 }],
+        },
+        path: 'tabsContentWidth',
+    },
     maxItemsPerLine: {
         type: 'Number',
         label: { en: 'Items per line', fr: 'Élements par ligne' },

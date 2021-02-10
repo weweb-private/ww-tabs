@@ -1,5 +1,6 @@
 <template>
     <div class="tabs-object" :class="content.tabsPosition" :style="cssVariables">
+        lala
         <div class="tabs-container" :class="content.tabsPosition" :style="itemsPerLines" v-if="this.tabsNumber">
             <div class="layout-container" v-for="index in this.tabsNumber" :key="index" @click="changeTab(index)">
                 <div class="layout-sublayout">
@@ -160,6 +161,14 @@ export default {
     justify-content: center;
     overflow: visible;
 
+    @media (max-width: 767.98px) {
+        flex-wrap: wrap;
+    }
+
+    @media (max-width: 991.98px) {
+        flex-wrap: wrap;
+    }
+
     &.bottom {
         flex-direction: column-reverse;
     }
@@ -173,9 +182,14 @@ export default {
     .tabs-content {
         width: calc(100% - var(--width-repartition));
 
+        @media (max-width: 767.98px) {
+            width: 100% !important;
+        }
+
         .layout {
             flex-direction: column;
             min-width: 200px;
+
             &.isEditing {
                 border: 1px dashed var(--ww-color-dark-500);
             }
@@ -196,6 +210,10 @@ export default {
         position: relative;
         min-width: 390px;
 
+        @media (max-width: 767.98px) {
+            width: 100% !important;
+        }
+
         &.left {
             width: 50%;
             flex-direction: row;
@@ -210,6 +228,7 @@ export default {
 
         .layout-container {
             flex: 0 var(--items-per-line);
+
             display: flex;
             flex-direction: row;
             justify-content: center;

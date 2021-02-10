@@ -1,6 +1,5 @@
 <template>
     <div class="tabs-object" :class="content.tabsPosition" :style="cssVariables">
-        lala
         <div class="tabs-container" :class="content.tabsPosition" :style="itemsPerLines" v-if="this.tabsNumber">
             <div class="layout-container" v-for="index in this.tabsNumber" :key="index" @click="changeTab(index)">
                 <div class="layout-sublayout">

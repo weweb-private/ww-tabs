@@ -85,7 +85,11 @@ export default {
         cssVariables() {
             return {
                 '--tab-transition-duration': this.content.transitionDuration + 's',
-                '--width-repartition': this.content.tabsContentWidth,
+                '--tab-width-repartition': this.content.tabsContentWidth,
+                '--content-width-repartition':
+                    this.content.tabsPosition === 'top' || this.content.tabsPosition === 'bottom'
+                        ? '100%'
+                        : `calc(100% - ${this.content.tabsContentWidth})`,
             };
         },
         itemsPerLines() {
@@ -149,7 +153,8 @@ export default {
     --tab-transition-duration: 0.5s;
     --tab-leftRight-position: 30%;
     --tab-topBottom-position: -50%;
-    --width-repartition: 50%;
+    --content-width-repartition: 50%;
+    --tab-width-repartition: 50%;
 
     position: relative;
     min-width: 100px;
@@ -179,7 +184,7 @@ export default {
     }
 
     .tabs-content {
-        width: calc(100% - var(--width-repartition));
+        width: var(--content-width-repartition);
 
         @media (max-width: 767.98px) {
             width: 100% !important;
@@ -198,7 +203,8 @@ export default {
     .tabs-container {
         --items-per-line: 50%;
 
-        width: var(--width-repartition);
+        width: var(--tab-width-repartition);
+        margin: auto;
 
         z-index: 1;
         display: flex;

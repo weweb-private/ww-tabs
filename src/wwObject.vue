@@ -156,7 +156,7 @@ export default {
     min-height: 100px;
     display: flex;
     margin: auto;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     overflow: visible;
 

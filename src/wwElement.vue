@@ -1,32 +1,30 @@
 <template>
     <div class="tabs-object" :class="content.tabsPosition" :style="cssVariables">
-        <div class="tabs-container" :class="content.tabsPosition" :style="itemsPerLines" v-if="this.tabsNumber">
-            <div class="layout-container" v-for="index in this.tabsNumber" :key="index" @click="changeTab(index)">
+        <div v-if="tabsNumber" class="tabs-container" :class="content.tabsPosition" :style="itemsPerLines">
+            <div v-for="index in tabsNumber" :key="index" class="layout-container" @click="changeTab(index)">
                 <div class="layout-sublayout">
                     <wwLayout
                         v-if="currentTabIndex === index || content.editActiveTabs"
                         class="layout -layout"
                         :class="{ isEditing: isEditing }"
                         :path="`tabsListActive[${index}]`"
-                    ></wwLayout>
+                    />
                     <wwLayout
                         v-else
                         class="layout -layout"
                         :class="{ isEditing: isEditing }"
                         :path="`tabsList[${index}]`"
-                    ></wwLayout>
+                    />
                 </div>
             </div>
         </div>
-
         <transition :name="activeTransition" mode="out-in">
-            <div class="tabs-content" :key="currentTabIndex">
+            <div :key="currentTabIndex" class="tabs-content">
                 <wwLayout
                     class="layout -layout"
                     :class="{ isEditing: isEditing }"
                     :path="`tabsContent[${currentTabIndex}]`"
-                >
-                </wwLayout>
+                />
             </div>
         </transition>
     </div>
@@ -37,11 +35,12 @@ import { getSettingsConfigurations } from './configuration';
 
 export default {
     props: {
-        content: Object,
+        content: { type: Object, required: true },
         /* wwEditor:start */
-        wwEditorState: Object,
+        wwEditorState: { type: Object, required: true },
         /* wwEditor:end */
     },
+    emits: ['update:content'],
     wwDefaultContent: {
         numberOfTabs: '6',
         tabsPosition: 'left',
@@ -51,7 +50,6 @@ export default {
         tabsContentWidth: '50%',
         order: null,
         editActiveTabs: false,
-
         tabsContent: [],
         tabsList: [],
         tabsListActive: [],
@@ -68,11 +66,6 @@ export default {
             tabsNumber: 3,
             activeTransition: 'fade',
         };
-    },
-    watch: {
-        'content.numberOfTabs'() {
-            this.tabsNumber = parseInt(this.content.numberOfTabs);
-        },
     },
     computed: {
         isEditing() {
@@ -106,6 +99,18 @@ export default {
             return '24px';
         },
     },
+    watch: {
+        'content.numberOfTabs'() {
+            this.tabsNumber = parseInt(this.content.numberOfTabs);
+        },
+    },
+    mounted() {
+        this.turnOffAsctiveState();
+        if (this.content.numberOfTabs) this.tabsNumber = parseInt(this.content.numberOfTabs);
+    },
+    beforeUnmount() {
+        this.turnOffAsctiveState();
+    },
     methods: {
         changeTab(index) {
             if (this.isEditing) return;
@@ -132,18 +137,11 @@ export default {
             }
         },
         turnOnAsctiveState() {
-            this.$emit('update', { editActiveTabs: true });
+            this.$emit('update:content', { editActiveTabs: true });
         },
         turnOffAsctiveState() {
-            this.$emit('update', { editActiveTabs: false });
+            this.$emit('update:content', { editActiveTabs: false });
         },
-    },
-    mounted() {
-        this.turnOffAsctiveState();
-        if (this.content.numberOfTabs) this.tabsNumber = parseInt(this.content.numberOfTabs);
-    },
-    beforeDestroy() {
-        this.turnOffAsctiveState();
     },
 };
 </script>

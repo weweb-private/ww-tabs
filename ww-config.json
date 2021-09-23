@@ -1,9 +1,0 @@
-{
-    "componentPath": "./src/wwElement.vue",
-    "editor": {
-        "label": {
-            "en": "Firstbase Tabs",
-            "fr": "Onglets Firstbase"
-        }
-    }
-}

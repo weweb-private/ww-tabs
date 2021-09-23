@@ -31,7 +31,6 @@
 </template>
 
 <script>
-import { getSettingsConfigurations } from './configuration';
 
 export default {
     props: {
@@ -41,25 +40,6 @@ export default {
         /* wwEditor:end */
     },
     emits: ['update:content'],
-    wwDefaultContent: {
-        numberOfTabs: '6',
-        tabsPosition: 'left',
-        maxItemsPerLine: 2,
-        transition: 'fade',
-        transitionDuration: 0.5,
-        tabsContentWidth: '50%',
-        order: null,
-        editActiveTabs: false,
-        tabsContent: [],
-        tabsList: [],
-        tabsListActive: [],
-        subTabLayouts: [],
-    },
-    /* wwEditor:start */
-    wwEditorConfiguration({ content }) {
-        return getSettingsConfigurations(content);
-    },
-    /* wwEditor:end */
     data() {
         return {
             currentTabIndex: 1,

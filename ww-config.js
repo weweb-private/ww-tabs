@@ -111,6 +111,7 @@ export default {
         },
         turnOnOffAsctiveState: {
             type: 'Button',
+            editorOnly: true,
             options: (content, sidepanelContent) => {
                 if(sidepanelContent.editActiveTabs){
                     return {

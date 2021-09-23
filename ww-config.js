@@ -23,6 +23,7 @@ export default {
             hidden: true,
         },
         editActiveTabs: {
+            hidden: true,
             defaultValue: false,
             editorOnly: true,
         },

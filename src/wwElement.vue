@@ -117,10 +117,10 @@ export default {
             }
         },
         turnOnAsctiveState() {
-            this.$emit('update:content', { editActiveTabs: true });
+            this.$emit('update:sidepanel-content', { path: 'editActiveTabs', value: true });
         },
         turnOffAsctiveState() {
-            this.$emit('update:content', { editActiveTabs: false });
+            this.$emit('update:sidepanel-content', { path: 'editActiveTabs', value: false });
         },
     },
 };

@@ -39,7 +39,7 @@ export default {
         wwEditorState: { type: Object, required: true },
         /* wwEditor:end */
     },
-    emits: ['update:content'],
+    emits: ['update:sidepanel-content'],
     data() {
         return {
             currentTabIndex: 1,

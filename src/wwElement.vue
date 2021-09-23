@@ -4,7 +4,7 @@
             <div v-for="index in tabsNumber" :key="index" class="layout-container" @click="changeTab(index)">
                 <div class="layout-sublayout">
                     <wwLayout
-                        v-if="currentTabIndex === index || content.editActiveTabs"
+                        v-if="currentTabIndex === index || _editActiveTabs"
                         class="layout -layout"
                         :class="{ isEditing: isEditing }"
                         :path="`tabsListActive[${index}]`"
@@ -78,6 +78,12 @@ export default {
 
             return '24px';
         },
+        _editActiveTabs(){
+            /* wwEditor:start */
+            return this.wwEditorState.sidepanelContent.editActiveTabs
+            /* wwEditor:end */
+            return false
+        }
     },
     watch: {
         'content.numberOfTabs'() {
